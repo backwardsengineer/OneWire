@@ -5,6 +5,32 @@ namespace Rinsen.IoT.OneWire
 {
     public class DS2482DeviceFactory : IDS2482DeviceFactory
     {
+        /// <summary>
+        /// Instantiate a DS2482 on the specified port
+        /// To use I2C port 0 : (1) Enable I2C using raspi-config, (2) modify /boot/config.txt to include :
+        /// dtparam=i2c_arm=on  
+        /// dtoverlay=i2c-gpio,bus=0,i2c_gpio_sda=0,i2c_gpio_scl=1 #this is a software i2c on pins 27 and 28
+        /// #dtoverlay=vc4-kms-v3d (comment this line out)
+        /// </summary>
+        /// <param name="busId">busID = 0 : SDA on pin 27, SCL on pin 28 ; busID = 1 : SDA on pin 3, SCL on pin 5 </param>
+        /// <param name="ad0">AD0 on the DS2482-100</param>
+        /// <param name="ad1">AD1 on the DS2482-100</param>
+        /// <returns></returns>
+        public DS2482_100 CreateDS2482_100(int busId, bool ad0, bool ad1)
+        {
+            byte address = 0x18;
+            if (ad0)
+            {
+                address |= 1 << 0;
+            }
+            if (ad1)
+            {
+                address |= 1 << 1;
+            }
+
+            return CreateDS2482_100(busId, address);
+        }
+
         public DS2482_100 CreateDS2482_100(bool ad0, bool ad1)
         {
             byte address = 0x18;

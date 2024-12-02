@@ -6,5 +6,10 @@
         {
             return (b & (1 << bitNumber)) != 0;
         }
+
+        public static bool GetBit(this ushort b, int bitNumber)
+        {
+            return (b & (1 << bitNumber)) != 0;
+        }
     }
 }

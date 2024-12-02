@@ -23,6 +23,7 @@ namespace Rinsen.IoT.OneWire
 
             AddDeviceType<DS18S20>(0x10);
             AddDeviceType<DS18B20>(0x28);
+            AddDeviceType<MAX31850>(0x3B);
         }
 
         public abstract bool IsCorrectChannelSelected(OneWireChannel channel);
