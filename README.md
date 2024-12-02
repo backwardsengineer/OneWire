@@ -12,7 +12,7 @@ Introduction
 A powerful library for a simple and easy to use API when communicating with One Wire devices via I2C on Raspberry Pi.
 
     using (var ds2482_800 = await _dS2482DeviceFactory.CreateDS2482_800(false, false, false))
-    using (var ds2482_100 = await _dS2482DeviceFactory.CreateDS2482_100(true, true))
+    using (var ds2482_100 = await _dS2482DeviceFactory.CreateDS2482_100(1, true, true))
     {
         while (true)
         {
@@ -49,15 +49,28 @@ A powerful library for a simple and easy to use API when communicating with One 
                 // Insert code to log result in some way
             }
 
+            foreach (Rinsen.IoT.OneWire.MAX31850 device in ds2482_100.GetDevices<Rinsen.IoT.OneWire.MAX31850>())
+            {
+                MAX31850.TemperatureConversionResult tcr = device.GetTemperature();
+                Console.WriteLine("DS2482-100, MAX31850 :");
+                Console.WriteLine(tcr.TemperatureConversionResultNarrative);
+
+                // Insert code to log result in some way
+            }
+
             await Task.Delay(5000);
         }
     }
 
-And thats all you need to get started with measuring temperatures with a DS18B20 from .NET and C# on Raspberry Pi.
+And thats all you need to get started with measuring temperatures with a DS18B20 or MAX31850 from .NET and C# on Raspberry Pi.
 
 Headed apps
 -----------
 Headed apps do not currently support disposing the DS2482 devices. The instance MUST be reused between measurements.
+
+I2C Bus
+-------
+CreateDS2482_100(int busId, bool ad0, bool ad1) allows the I2C bus to be selected in the case you are either not using the default I2C bus 1, or your project has multiple I2C busses.
 
 I2C Address
 -----------
@@ -72,6 +85,7 @@ Built in One Wire Device Support
 ## Today:
 1. DS18B20
 2. DS18S20
+3. MAX31850
 
 ## Extend with your own device
 
